@@ -14,13 +14,14 @@ public class CustomerJpaExam {
         EntityTransaction transaction = entityManager.getTransaction();
 
         transaction.begin();
-        //
-        try {
-            Customer customer = new Customer("ID0001", "Kim");
-            entityManager.persist(customer); // INSERT X
 
-            Customer customer2 = entityManager.find(Customer.class, "ID0002");
-            System.out.println(customer2.toString());
+        try {
+            Customer customer = new Customer("ID0004", "Lee"); // 비영속 상태(new)
+            entityManager.persist(customer); // Customer 객체가 영속 상태(Managed)
+            entityManager.detach(customer); // Customer 객체를 준영속 상태(Detached)
+
+            Customer foundCustomer = entityManager.find(Customer.class, "ID0004");
+            System.out.println(foundCustomer);
 
             transaction.commit();
         } catch (Exception e) {
