@@ -16,12 +16,8 @@ public class CustomerJpaExam {
         transaction.begin();
 
         try {
-            Customer customer = new Customer("ID0004", "Lee"); // 비영속 상태(new)
-            entityManager.persist(customer); // Customer 객체가 영속 상태(Managed)
-            entityManager.detach(customer); // Customer 객체를 준영속 상태(Detached)
-
-            Customer foundCustomer = entityManager.find(Customer.class, "ID0004");
-            System.out.println(foundCustomer);
+            Customer customer = new Customer(1L, "Cha");
+            entityManager.persist(customer);
 
             transaction.commit();
         } catch (Exception e) {
