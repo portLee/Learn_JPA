@@ -8,10 +8,15 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "customer_tb")
+@SequenceGenerator(
+        name = "customer_generator",
+        sequenceName = "customer_seq",
+        initialValue = 1,
+        allocationSize = 50)
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_generator")
     private Long id;
     private String name;
     private Long registerDate;
