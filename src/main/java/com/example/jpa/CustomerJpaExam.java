@@ -16,8 +16,12 @@ public class CustomerJpaExam {
         transaction.begin();
 
         try {
-            Customer customer = new Customer(1L, "Cha");
+            Customer customer = new Customer();
+            customer.setName("Kim");
+            customer.setRegisterDate(System.currentTimeMillis());
             entityManager.persist(customer);
+
+            System.out.println("============= Before Commit ==========");
 
             transaction.commit();
         } catch (Exception e) {
