@@ -16,12 +16,10 @@ public class CustomerJpaExam {
         transaction.begin();
 
         try {
-            for (int i = 0; i < 100; i++) {
-                Customer customer = new Customer();
-                customer.setName("Kim");
-                customer.setRegisterDate(System.currentTimeMillis());
-                entityManager.persist(customer);
-            }
+            Customer customer = new Customer();
+            customer.setName("Kim");
+            customer.setRegisterDate(System.currentTimeMillis());
+            entityManager.persist(customer);
 
             System.out.println("============= Before Commit ==========");
 
