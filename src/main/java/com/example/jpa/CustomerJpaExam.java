@@ -1,6 +1,7 @@
 package com.example.jpa;
 
-import com.example.jpa.entity.Customer;
+import com.example.jpa.entity.Major;
+import com.example.jpa.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -16,12 +17,20 @@ public class CustomerJpaExam {
         transaction.begin();
 
         try {
-            Customer customer = new Customer();
-            customer.setName("Kim");
-            customer.setRegisterDate(System.currentTimeMillis());
-            entityManager.persist(customer);
+            Major major = new Major("Computer Science", "College of Engineering");
+            entityManager.persist(major);
 
-            System.out.println("============= Before Commit ==========");
+            Student student = new Student("Kim", "3");
+            student.setMajor(major);
+            entityManager.persist(student);
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // Student 검색
+            Student foundStudent = entityManager.find(Student.class, 1);
+            // Student의 전공 이름 검색
+            System.out.println(foundStudent.getMajor().getName());
 
             transaction.commit();
         } catch (Exception e) {
