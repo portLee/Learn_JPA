@@ -1,7 +1,7 @@
 package com.example.jpa;
 
-import com.example.jpa.entity.Major;
-import com.example.jpa.entity.Student;
+import com.example.jpa.entity.Address;
+import com.example.jpa.entity.Hotel;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -17,20 +17,15 @@ public class CustomerJpaExam {
         transaction.begin();
 
         try {
-            Major major = new Major("Computer Science", "College of Engineering");
-            entityManager.persist(major);
-
-            Student student = new Student("Kim", "3");
-            student.setMajor(major);
-            entityManager.persist(student);
+            Address address = null;
+            Hotel hotel = new Hotel("H00", "HN", 2022, address);
+            entityManager.persist(hotel);
 
             entityManager.flush();
             entityManager.clear();
 
-            // Student 검색
-            Student foundStudent = entityManager.find(Student.class, 1);
-            // Student의 전공 이름 검색
-            System.out.println(foundStudent.getMajor().getName());
+            Hotel foundHotel = entityManager.find(Hotel.class, "H00");
+            System.out.println(foundHotel.getAddress());
 
             transaction.commit();
         } catch (Exception e) {
