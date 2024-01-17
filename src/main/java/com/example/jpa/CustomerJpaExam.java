@@ -1,7 +1,8 @@
 package com.example.jpa;
 
 import com.example.jpa.entity.Address;
-import com.example.jpa.entity.Hotel;
+import com.example.jpa.entity.Intro;
+import com.example.jpa.entity.Writer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -17,15 +18,18 @@ public class CustomerJpaExam {
         transaction.begin();
 
         try {
-            Address address = null;
-            Hotel hotel = new Hotel("H00", "HN", 2022, address);
-            entityManager.persist(hotel);
+            Writer writer = new Writer("이름",
+                    new Intro("text/plain", "소개글"),
+                    new Address("주소1", "주소2", "12345"));
+            entityManager.persist(writer);
 
             entityManager.flush();
             entityManager.clear();
 
-            Hotel foundHotel = entityManager.find(Hotel.class, "H00");
-            System.out.println(foundHotel.getAddress());
+            Writer foundWriter = entityManager.find(Writer.class, writer.getId());
+            foundWriter.setAddress(new Address("새주소1", "새주소2", "12345"));
+
+            entityManager.remove(foundWriter);
 
             transaction.commit();
         } catch (Exception e) {
