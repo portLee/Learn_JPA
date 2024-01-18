@@ -1,12 +1,14 @@
 package com.example.jpa;
 
 import com.example.jpa.entity.GrantedPermission;
+import com.example.jpa.entity.Question;
 import com.example.jpa.entity.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
+import java.util.List;
 import java.util.Set;
 
 public class CustomerJpaExam {
@@ -19,14 +21,15 @@ public class CustomerJpaExam {
         transaction.begin();
 
         try {
-            GrantedPermission grantedPermission = new GrantedPermission();
-            Role role = new Role("R1", "관리자", Set.of(grantedPermission));
-            entityManager.persist(role);
+            Question question = new Question("Q1", "질문", List.of("보기1", "보기2"));
+            entityManager.persist(question);
 
             entityManager.flush();
             entityManager.clear();
 
-            Role foundRole = entityManager.find(Role.class, role.getId());
+            Question foundQuestion = entityManager.find(Question.class, question.getId());
+            foundQuestion.setChoices(List.of("보기3", "보기4"));
+//            entityManager.remove(foundQuestion);
 
             transaction.commit();
         } catch (Exception e) {
