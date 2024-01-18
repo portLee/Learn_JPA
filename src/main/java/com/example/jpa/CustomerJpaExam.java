@@ -1,12 +1,13 @@
 package com.example.jpa;
 
-import com.example.jpa.entity.Address;
-import com.example.jpa.entity.Intro;
-import com.example.jpa.entity.Writer;
+import com.example.jpa.entity.GrantedPermission;
+import com.example.jpa.entity.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+
+import java.util.Set;
 
 public class CustomerJpaExam {
 
@@ -18,18 +19,14 @@ public class CustomerJpaExam {
         transaction.begin();
 
         try {
-            Writer writer = new Writer("이름",
-                    new Intro("text/plain", "소개글"),
-                    new Address("주소1", "주소2", "12345"));
-            entityManager.persist(writer);
+            GrantedPermission grantedPermission = new GrantedPermission();
+            Role role = new Role("R1", "관리자", Set.of(grantedPermission));
+            entityManager.persist(role);
 
             entityManager.flush();
             entityManager.clear();
 
-            Writer foundWriter = entityManager.find(Writer.class, writer.getId());
-            foundWriter.setAddress(new Address("새주소1", "새주소2", "12345"));
-
-            entityManager.remove(foundWriter);
+            Role foundRole = entityManager.find(Role.class, role.getId());
 
             transaction.commit();
         } catch (Exception e) {
