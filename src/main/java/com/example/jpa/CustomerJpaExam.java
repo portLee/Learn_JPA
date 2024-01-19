@@ -1,18 +1,13 @@
 package com.example.jpa;
 
-import com.example.jpa.entity.Document;
-import com.example.jpa.entity.GrantedPermission;
-import com.example.jpa.entity.Question;
-import com.example.jpa.entity.Role;
+import com.example.jpa.entity.MembershipCard;
+import com.example.jpa.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDateTime;
 
 public class CustomerJpaExam {
 
@@ -24,19 +19,17 @@ public class CustomerJpaExam {
         transaction.begin();
 
         try {
-            Map<String, String> props = new HashMap<>();
-            props.put("p1", "v1");
-            props.put("p2", "v2");
-            Document document = new Document("M1", "제목", "내용", props);
-            entityManager.persist(document);
+            User user = new User("a@a.com", "이름", LocalDateTime.now());
+            entityManager.persist(user);
+
+            MembershipCard membershipCard = new MembershipCard("8888111122223333", user);
+            entityManager.persist(membershipCard);
 
             entityManager.flush();
             entityManager.clear();
 
-            Document foundDocument = entityManager.find(Document.class, document.getId());
-            foundDocument.setProp("p1", "newV1"); // 수정
-            foundDocument.setProp("p10", "v10"); // 추가
-            foundDocument.removeProp("p2"); // 삭제
+            MembershipCard foundCard = entityManager.find(MembershipCard.class, "8888111122223333");
+            System.out.println(foundCard.getOwner());
 
             transaction.commit();
         } catch (Exception e) {
