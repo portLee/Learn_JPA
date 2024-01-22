@@ -17,12 +17,15 @@ public class Question {
     private String id;
     private String text;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "question_choice",
-            joinColumns = @JoinColumn(name = "question_id")
-    )
+    @OneToMany
+    @JoinColumn(name = "question_id")
     @OrderColumn(name = "idx") // 인덱스 값 컬럼 지정
-    @Column(name = "text")
-    private List<String> choices;
+    private List<Choice> choices;
+
+    public void removeChoice(Choice choice) { // 삭제
+        choices.remove(choice);
+    }
+    public void addChoice(Choice choice) { // 추가
+        choices.add(choice);
+    }
 }

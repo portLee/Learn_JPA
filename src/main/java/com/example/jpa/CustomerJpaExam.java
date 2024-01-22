@@ -1,14 +1,14 @@
 package com.example.jpa;
 
-import com.example.jpa.entity.Permission;
-import com.example.jpa.entity.Role;
+import com.example.jpa.entity.Choice;
+import com.example.jpa.entity.Question;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerJpaExam {
 
@@ -20,30 +20,29 @@ public class CustomerJpaExam {
         transaction.begin();
 
         try {
-            // Step 1: Permission 엔티티 저장
-            Permission perm1 = new Permission("P1", "G1");
-            Permission perm2 = new Permission("P2", "G2");
-            Permission perm3 = new Permission("P3", "G3");
-            entityManager.persist(perm1);
-            entityManager.persist(perm2);
-            entityManager.persist(perm3);
+            Choice c1 = new Choice("C1", "TEXT1");
+            Choice c2 = new Choice("C2", "TEXT2");
+            Choice c3 = new Choice("C3", "TEXT3");
+            Choice c4 = new Choice("C4", "TEXT4");
+            entityManager.persist(c1);
+            entityManager.persist(c2);
+            entityManager.persist(c3);
+            entityManager.persist(c4);
 
-            // Step 2: Role 엔티티 생성 및 저장
-            Set<Permission> permissions = new HashSet<>();
-            permissions.add(perm1);
-            permissions.add(perm2);
-            Role role = new Role("R1", "ROLE1", permissions);
-            entityManager.persist(role);
+            List<Choice> choices = new ArrayList<>();
+            choices.add(c1);
+            choices.add(c2);
+            choices.add(c3);
+            entityManager.persist(new Question("Q1", "질문", choices));
 
             entityManager.flush();
             entityManager.clear();
 
-            Permission foundPerm1 = entityManager.find(Permission.class, "P1");
-            Permission foundPerm3 = entityManager.find(Permission.class, "P3");
-            Role foundRole = entityManager.find(Role.class, "R1");
-//            foundRole.removePerm(foundPerm1);
-//            foundRole.addPerm(foundPerm3);
-            foundRole.removeAllPerm();
+            Choice foundChoice1 = entityManager.find(Choice.class, "C1");
+            Choice foundChoice4 = entityManager.find(Choice.class, "C4");
+            Question foundQuestion = entityManager.find(Question.class, "Q1");
+            foundQuestion.removeChoice(foundChoice1);
+            foundQuestion.addChoice(foundChoice4);
 
             transaction.commit();
         } catch (Exception e) {
