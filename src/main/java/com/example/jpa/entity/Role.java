@@ -18,10 +18,17 @@ public class Role {
     private String id;
     private String name;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "role_perm", // 컬렉션 테이블 지정
-            joinColumns = @JoinColumn(name = "role_id") // 조인 컬럼 지정
-    )
-    private Set<GrantedPermission> permissions = new HashSet<>();
+    @OneToMany
+    @JoinColumn(name = "role_id")
+    private Set<Permission> permissions = new HashSet<>();
+
+    public void addPerm(Permission perm) { // 추가
+        permissions.add(perm);
+    }
+    public void removePerm(Permission perm) { // 삭제
+        permissions.remove(perm);
+    }
+    public void removeAllPerm() { // 모두 삭제
+        permissions.clear();
+    }
 }
