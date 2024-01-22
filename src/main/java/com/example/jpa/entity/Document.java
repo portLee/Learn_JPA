@@ -19,19 +19,15 @@ public class Document {
     private String title;
     private String content;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "doc_prop",
-            joinColumns = @JoinColumn(name = "doc_id")
-    )
-    @MapKeyColumn(name = "name") // 키가 될 컬럼 지정
-    @Column(name = "`value`")
-    private Map<String, String> props = new HashMap<>();
+    @OneToMany
+    @JoinColumn(name = "doc_id")
+    @MapKeyColumn(name = "doc_title") // Map의 키가 될 컬럼 지정
+    private Map<String, PropValue> props = new HashMap<>();
 
-    public void setProp(String name, String value) { // 추가 및 수정
-        props.put(name, value);
+    public void addProp(String key, PropValue propValue) { // 추가 및 수정
+        props.put(key, propValue);
     }
-    public void removeProp(String name) { // 삭제
-        props.remove(name);
+    public void removeProp(String key) { // 삭제
+        props.remove(key);
     }
 }
